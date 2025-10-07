@@ -1,6 +1,5 @@
-
 interface DirectorInterface {
-    workFromHome(): string;
+    workFromHome() : string;
     getCoffeeBreak(): string;
     workDirectorTasks(): string;
 }
@@ -11,66 +10,74 @@ interface TeacherInterface {
     workTeacherTasks(): string;
 }
 
-export const Director = class Director implements DirectorInterface {
+class Director implements DirectorInterface {
     workFromHome(): string {
-        return 'Working from home';
+        return ("Working from home.");
     }
-
     getCoffeeBreak(): string {
-        return 'Getting a coffee break';
+        return ("Getting a coffee break.");
     }
-
     workDirectorTasks(): string {
-        return 'Getting to director tasks';
+        return ("Getting to director tasks.");
+    }
+}
+class Teacher implements TeacherInterface {
+    workFromHome(): string {
+        return ("Cannot work from home.");
+    }
+    getCoffeeBreak(): string {
+        return ("Cannot have a break.")
+    }
+    workTeacherTasks(): string {
+        return("Getting to work.");
+    }
+}
+// To handle string salary with currency, parse numbers from strings:
+const createEmployee = (salary: number | string) : Director | Teacher => {
+    let numericSalary: number;
+    if (typeof salary ==="string") {
+        //Remove non-digit characters and pass number
+        numericSalary = parseInt(salary.replace(/[^0-9]/g, ""), 10);
+    } else {
+        numericSalary = salary;
+    }
+    if( numericSalary < 500) {
+        return new Teacher()
+    } else {
+        return new Director()
+    }
+}
+console.log(createEmployee(200));
+console.log(createEmployee(1200));
+console.log(createEmployee("$450"));
+console.log(createEmployee("$600"));
+
+// functions for specific employees
+function isDirector(employee: Teacher | Director ) : boolean {
+    return employee instanceof Director;
+}
+
+const executeWork = (employee: Teacher | Director): string => {
+    if (employee instanceof Director) {
+        return employee.workDirectorTasks();
+    } else if (employee instanceof Teacher) {
+        return employee.workTeacherTasks();
     }
 }
 
-export function teachClass(todayClass:Subjects): string {
-  if (todayClass === 'Math') {
-    return 'Teaching Math'
-  } else if (todayClass === 'History') {
-    return 'Teaching History'
-  }
+console.log(executeWork(createEmployee(200)));
+console.log(executeWork(createEmployee(1000)))
+console.log(executeWork(createEmployee("Ksh350")));
+
+//String literal types
+type Subjects = "Math" | "History";
+const teachClass = (todayClass: Subjects) : string => {
+    if (todayClass === "Math") {
+        return "Teaching Math";
+    } else if (todayClass === "History") {
+        return "Teaching History";
+    }
 }
 
-
-export const Teacher = class Teacher implements TeacherInterface {
-  workFromHome(): string {
-    return 'Cannot work from home';
-  }
-
-  getCoffeeBreak(): string {
-    return 'Cannot have a break';
-  }
-
-  workTeacherTasks(): string {
-    return 'Getting to work';
-  }
-}
-
-export function createEmployee(firstName: string, lastName: string, salary: number | string): DirectorInterface | TeacherInterface {
-  const salaryNumber = typeof salary === 'number' ? salary : Number(salary);
-  if (salaryNumber < 500) {
-    return new Teacher();
-  }
-
-  return new Director();
-}
-
-console.log(createEmployee('John', 'Doe', 200));
-console.log(createEmployee('Jane', 'Smith', 1000));
-console.log(createEmployee('Jim', 'Beam', '$500'));
-
-function isDirector(employee: TeacherInterface | DirectorInterface): employee is DirectorInterface {
-  return (employee as DirectorInterface).workDirectorTasks !== undefined;
-}
-
-function executeWork(employee: TeacherInterface | DirectorInterface): string {
-  if (isDirector(employee)) {
-    return employee.workDirectorTasks();
-  }
-  return employee.workTeacherTasks();
-}
-
-export type Subjects = 'Math' | 'History';
-
+console.log(teachClass("Math"));
+console.log(teachClass("History"));

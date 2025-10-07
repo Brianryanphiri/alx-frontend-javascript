@@ -1,55 +1,48 @@
 interface Student {
-    firstName: string,
-    lastName: string,
-    age: number,
-    location: string
+    readonly firstName: string;
+    readonly lastName: string;
+    age: number;
+    location: string;
 }
 
-const student1: Student = {
-    firstName: "Noel",
-    lastName: "Mangwarira",
-    age: 35,
-    location: "South Africa"
-};
+const studentOne : Student = {
+    firstName: "Kenneth",
+    lastName: "Kamau",
+    age: 23,
+    location: "Kasarani"
+}
 
-const student2: Student = {
-    firstName: "Danai",
-    lastName: "Mangwarira",
-    age: 34,
-    location: "Zimbabwe"
-};
+const studentTwo : Student = {
+    firstName: "Samuel",
+    lastName: "Kasee",
+    age: 21,
+    location: "Kahawa Sukari"
+}
 
-const studentsList: Student[] = [student1, student2];
+const studentsList: Student[] = [studentOne, studentTwo];
+const namesArray: number[] = [] ;
+namesArray[1] = 35;
 
-// Render a table showing first name and location
-const table = document.createElement('table');
 
-// Optional: Create table headers
-const headerRow = document.createElement('tr');
-const headerFirstName = document.createElement('th');
-headerFirstName.textContent = 'First Name';
-const headerLocation = document.createElement('th');
-headerLocation.textContent = 'Location';
 
-headerRow.appendChild(headerFirstName);
-headerRow.appendChild(headerLocation);
-table.appendChild(headerRow);
+const table = document.createElement("table");
+const tbody = document.createElement("tbody");
 
-// Loop through students and add rows
-studentsList.forEach((student) => {
-    const row = document.createElement('tr');
+table.appendChild(tbody);
 
-    const firstNameCell = document.createElement('td');
-    firstNameCell.textContent = student.firstName;
+studentsList.forEach((student: Student): void => {
+    const row = document.createElement("tr");
+    const nameId = document.createElement("td");
+    const locationId = document.createElement("td");
 
-    const locationCell = document.createElement('td');
-    locationCell.textContent = student.location;
+    nameId.textContent = student.firstName;
+    locationId.textContent = student.location;
 
-    row.appendChild(firstNameCell);
-    row.appendChild(locationCell);
-    table.appendChild(row);
+    nameId.style.padding = "10px";
+    locationId.style.padding = "8px";
+
+    row.appendChild(nameId);
+    row.appendChild(locationId);
+    tbody.appendChild(row);
 });
-
-// Append table to the document body
 document.body.appendChild(table);
-
